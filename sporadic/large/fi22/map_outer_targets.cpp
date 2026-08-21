@@ -278,7 +278,7 @@ int main(int argc, char** argv) {
   }
   output << "# done targets=743 scalar_power=" << scalarPower
             << " scalar_checks=743 unique=743"
-            " inner_overlaps=0 status=complete\n";
+            " inner_overlaps=0\n";
   std::cout << "Mapped 743 outer targets; the coordinate maps differ by z^"
             << scalarPower << ".\n";
   return 0;

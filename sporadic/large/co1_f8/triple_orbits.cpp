@@ -259,8 +259,7 @@ void self_test() {
             direct_image(value, pair.matrices[0]))
             throw std::runtime_error("packed image self-test failed");
     std::cout
-        << "SELF_TEST|dimension=4|orbit_count=12"
-        << "|regular_orbit_count=4|mass=16|status=PASS\n";
+        << "Self-test: 12 orbits, 4 regular orbits, mass 16.\n";
 }
 
 }  // namespace

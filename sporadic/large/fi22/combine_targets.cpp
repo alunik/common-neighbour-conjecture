@@ -308,8 +308,7 @@ int main(int argc, char** argv) {
               << " inner_unique=" << innerTargets.size()
               << " outer_inner_overlap=" << overlapInner
               << " union_nonregular=" << unionNonregular
-              << " coordinate_bridge=BIJECTIVE_ON_RECORDS"
-              << " status=complete\n";
+              << " coordinate_bridge=BIJECTIVE_ON_RECORDS\n";
   } catch (const std::exception& error) {
     std::cerr << "ERROR: " << error.what() << '\n';
     return 1;

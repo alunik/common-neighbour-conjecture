@@ -397,8 +397,7 @@ for outerId in [1..Length(orderedOuterRecords)] do
       " fixed_dimension=", Length(fixedBasis),
       " centralizer_generators=", Length(restrictedMatrices),
       " adjustment_powers=", adjustmentPowers,
-      " output=", outputPath,
-      " status=complete\n");
+      " output=", outputPath, "\n");
 od;
 
 Print("Fi22 outer-involution actions\n");

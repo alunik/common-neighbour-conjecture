@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Submit the Fi22 calculation from the root of the repository.  The independent
-# setup jobs run in parallel, and the remaining stages use Slurm dependencies.
+# Submit the Fi22 calculation from the root of the repository.  Slurm
+# dependencies keep each generated input ahead of the program that reads it.
 
 set -euo pipefail
 

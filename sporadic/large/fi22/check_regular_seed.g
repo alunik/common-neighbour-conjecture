@@ -107,8 +107,7 @@ fi;
 AssertExt(orientation <> fail, "intertwiner conjugation check failed");
 Print("RESTRICTION_BRIDGE rank=54 orientation=", orientation,
     " central_adjustment=", adjustment,
-    " adjusted_orders=", List(k54, Order),
-    " status=complete\n");
+    " adjusted_orders=", List(k54, Order), "\n");
 
 # Find the maximal subgroup aligned with the degree-61776 action.
 alignedMax := fail;;
@@ -184,7 +183,7 @@ while head <= Length(queue) do
 od;
 AssertExt(Length(queue) = 61776,
     "dual-plane orbit does not have length 61776");
-Print("DUAL_PLANES count=61776 alignment_edges=123552 status=complete\n");
+Print("DUAL_PLANES count=61776 alignment_edges=123552\n");
 
 seedLines := Filtered(SplitString(StringFile(Concatenation(
     root, "/generated/regular_seed.txt")), "\n", "\r"),

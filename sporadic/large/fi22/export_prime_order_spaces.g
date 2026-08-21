@@ -198,11 +198,12 @@ ExportSpecification := function(specification)
       " centralizer=", centralOrder,
       " dims=", JoinStringsWithSeparator(List(dimensions, String), ","),
       " generators=", Length(matrixLifts),
-      " output=", outputPath, " status=complete\n");
+      " output=", outputPath, "\n");
 end;;
 
 for specification in specifications do
   ExportSpecification(specification);
 od;
-Print("FINAL classes=", Length(specifications), " status=complete\n");
+Print("Wrote ", Length(specifications),
+    " prime-order fixed-space actions.\n");
 QUIT_GAP(0);
