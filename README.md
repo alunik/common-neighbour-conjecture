@@ -9,8 +9,7 @@ quasisimple sporadic point stabilisers.
 
 ## Contents
 
+- [`lemmas/`](lemmas/): the seed computations supporting the computational
+  checks in the paper, one short GAP file per lemma.
 - [`sporadic/`](sporadic/): computations for the ten cases in Table 1 of
   Lee--Popiel.
-
-More code will be added once we have decided which calculations from the paper
-should be included.
