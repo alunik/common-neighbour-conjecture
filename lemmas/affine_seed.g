@@ -1,4 +1,4 @@
-# The affine seed (Lemma 3.1 of the paper).
+# The affine seed (Lemma 3.3 of the paper).
 #
 # L0 = D:P <= GL(9,3) is the monomial group of order 1152 whose coordinates
 # are indexed by a 3x3 grid: D consists of the diagonal sign matrices whose
