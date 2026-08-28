@@ -7,7 +7,7 @@
 #
 # The script checks that L0 acts irreducibly on U0 = GF(3)^9 with exactly
 # two regular orbits O1,O2 with the displayed representatives, that
-# O + O + O = U0 for each regular orbit O, and that the all-ones vector
+# O1 + O1 = U0 and |U0 \ (O2 + O2)| = 32, and that the all-ones vector
 # lies in O_s + O_t if and only if s = t = 1.
 
 Require := function(condition, message)
@@ -93,22 +93,25 @@ Print("exactly two regular orbits found and labelled by u1,u2\n");
 
 num := v -> NumberFFVector(v, 3) + 1;;
 
-# (i): O + O + O = U0 for each regular orbit O.
-B2 := fail;;
-for O in reg do
-  B2 := BlistList([1..3^9], []);
+# (i): O1 + O1 = U0 and |U0 \ (O2 + O2)| = 32.
+pairSumBlist := function(O)
+  local sums, x, y;
+  sums := BlistList([1..3^9], []);
   for x in O do
     for y in O do
-      B2[num(x + y)] := true;
+      sums[num(x + y)] := true;
     od;
   od;
-  for t in vecs do
-    if not ForAny(O, x -> B2[num(t - x)]) then
-      Error("(i) fails: a vector is not a sum of three elements of O");
-    fi;
-  od;
-od;
-Print("(i) verified: O + O + O = U0 for both regular orbits\n");
+  return sums;
+end;;
+
+S1 := pairSumBlist(O1);;
+S2 := pairSumBlist(O2);;
+Require(Size(ListBlist([1..3^9], S1)) = 3^9,
+        "(i) fails: O1 + O1 should be all of U0");
+Require(3^9 - Size(ListBlist([1..3^9], S2)) = 32,
+        "(i) fails: exactly 32 vectors should lie outside O2 + O2");
+Print("(i) verified: O1 + O1 = U0 and |U0 \\ (O2 + O2)| = 32\n");
 
 # (ii): the all-ones vector lies in O_s + O_t for exactly one pair (s, t).
 one := Sum(IdentityMat(9, F));;
