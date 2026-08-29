@@ -120,6 +120,10 @@ VerifySaxlCounterexample := function(gens, dim, expOrder, expHoles)
   # classify one representative of every orbit, testing membership in R
   # through a boolean list indexed by vector numbers
   Rnums := BlistList([1..q], List(Rset, num));
+  # Since R is one H-orbit and R + R is H-invariant, testing one element
+  # suffices to verify R is contained in R + R.
+  Require(ForAny(Rset, x -> Rnums[num(Rset[1] - x)]),
+          "the regular orbit should lie in R + R");
   holes := 0;
   for i in [1..Length(reps)] do
     t := reps[i];
@@ -135,6 +139,6 @@ VerifySaxlCounterexample := function(gens, dim, expOrder, expHoles)
   od;
   Require(holes = expHoles, "wrong number of vectors outside R + R");
   Print("exactly ", expHoles,
-        " vectors outside the union of R and R + R, all at distance 3\n");
+        " vectors outside R + R, all at distance 3\n");
   Print("degree ", q, ": Saxl diameter exactly 3, all checks passed\n");
 end;;
