@@ -3,3 +3,7 @@ build/
 *.o
 *.pyc
 __pycache__/
+/lean/.lake/
+/lean/.lean-tmp/
+*.olean
+*.ilean
