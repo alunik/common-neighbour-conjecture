@@ -1,15 +1,15 @@
-# The product-action seed (Lemma 4.1 of the paper).
+# The product-action input (Lemma 4.1 of the paper).
 #
 # K = PSL(2,11) acts on the 55 cosets of a dihedral subgroup of order 12.
 # The script checks that the two regular suborbits give self-paired
-# orbitals, exhibits a pair (alpha, beta) and an orbital colour c such
-# that no point gamma satisfies colour(alpha, gamma) = colour(gamma, beta)
-# = c, and checks that for each regular orbital any two points are joined
-# by a directed three-step monochromatic walk.
+# orbitals, exhibits a pair (alpha, beta) and a regular orbital O such that
+# no point gamma has both (alpha, gamma) and (gamma, beta) in O, and checks
+# that for each regular orbital any two points are joined by a three-step
+# walk whose three ordered pairs lie in that orbital.
 #
 # It then constructs the top group Q = {(a,b) in S4 x S4 : a*b^-1 in A4}
 # in its transitive action of degree 12 and enumerates all 2^12 binary
-# colourings: exactly 576 are distinguishing, all of weight six, forming
+# vectors: exactly 576 are distinguishing, all of weight six, forming
 # two Q-orbits of length 288 interchanged by complementation.
 
 Require := function(condition, message)
@@ -31,27 +31,27 @@ H1 := Stabilizer(G, 1);;
 regs := Filtered(Orbits(H1, [1..55]), o -> Length(o) = 12);;
 Require(Length(regs) = 2, "there should be exactly two regular suborbits");
 
-colour := NullMat(55, 55);;
+orbitalLabel := NullMat(55, 55);;
 for a in [1, 2] do
   for pr in Orbit(G, [1, regs[a][1]], OnPairs) do
-    colour[pr[1]][pr[2]] := a;
+    orbitalLabel[pr[1]][pr[2]] := a;
   od;
 od;
 
 Require(ForAll([1..55], u -> ForAll([1..55],
-        v -> colour[u][v] = colour[v][u])),
+        v -> orbitalLabel[u][v] = orbitalLabel[v][u])),
         "both regular orbitals should be self-paired");
 Print("two self-paired regular orbitals found\n");
 
-# (i): a switching witness.
+# (i): the regular-orbital obstruction.
 found := fail;;
 for alpha in [1..55] do
   for beta in [1..55] do
     if found = fail and alpha <> beta then
       for c in [1, 2] do
         if found = fail and ForAll([1..55],
-             gamma -> not (colour[alpha][gamma] = c
-                           and colour[gamma][beta] = c)) then
+             gamma -> not (orbitalLabel[alpha][gamma] = c
+                           and orbitalLabel[gamma][beta] = c)) then
           found := [alpha, beta, c];
         fi;
       od;
@@ -59,14 +59,14 @@ for alpha in [1..55] do
   od;
 od;
 Require(found <> fail, "(i) fails: no witness pair found");
-Print("(i) verified: witness (alpha, beta, colour) = ", found, "\n");
+Print("(i) verified: witness (alpha, beta, orbital label) = ", found, "\n");
 
-# (ii): monochromatic three-step walks.
+# (ii): three-step walks inside each regular orbital.
 for a in [1, 2] do
   A := NullMat(55, 55);
   for u in [1..55] do
     for v in [1..55] do
-      if colour[u][v] = a then A[u][v] := 1; fi;
+      if orbitalLabel[u][v] = a then A[u][v] := 1; fi;
     od;
   od;
   M := A * A * A;
@@ -105,5 +105,5 @@ Require(Set(worbs[1], s -> Difference([1..12], s)) = Set(worbs[2]),
         "(iii) fails: complementation should interchange the two orbits");
 Print("(iii) verified: 576 words of weight 6, two orbits swapped by complementation\n");
 
-Print("product-action seed: all checks passed\n");
+Print("product-action input: all checks passed\n");
 QUIT;

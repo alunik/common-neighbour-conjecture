@@ -9,7 +9,7 @@
 // scalar relating the two intertwiners and checks that it is uniform.
 //
 // Usage:
-//   outer_bridge_remap ORIGINAL F4_TO_H54 INNER_SCREEN OUTPUT
+//   map_outer_targets ORIGINAL F4_TO_H54 INNER_SCREEN OUTPUT
 
 #include <algorithm>
 #include <cctype>

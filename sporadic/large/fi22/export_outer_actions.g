@@ -13,7 +13,7 @@
 # The exporter also reconstructs the exact restriction-of-scalars bridge
 # from the ATLAS 54-dimensional coordinates to the reference 27-dimensional
 # GF(4) coordinates.  Each fixed-space basis row is written in both systems,
-# so outer_orbit_bfs.cpp can emit directly consumable representatives.
+# so enumerate_outer_orbits.cpp can emit directly consumable representatives.
 
 if LoadPackage("atlasrep") <> true then
   Error("AtlasRep is required");

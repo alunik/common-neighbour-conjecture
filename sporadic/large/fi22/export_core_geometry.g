@@ -149,7 +149,7 @@ for row in form do
 od;
 CloseStream(output);
 
-# A reference regular seed from the earlier exact census.  The zero functionals
+# A reference regular vector. The zero functionals
 # span its full annihilator, so its zero-set stabilizer in the faithful
 # 61776-point action is exactly its projective-line stabilizer.
 decode := [Zero(field), One(field), Z(4), Z(4)^2];;
@@ -160,9 +160,9 @@ zeroSet := Set(Filtered([1..61776], point ->
       regularSeed[coordinate] * dualLines[point][coordinate]) =
         Zero(field)));;
 AssertFi22(Length(zeroSet) = 15424,
-    "reference regular seed has unexpected zero count");
+    "reference regular vector has unexpected zero count");
 AssertFi22(RankMat(dualLines{zeroSet}) = 26,
-    "reference regular seed zeros do not span its annihilator");
+    "reference regular vector zeros do not span its annihilator");
 permutationGroup := Group(permutationGenerators);;
 SetSize(permutationGroup, permutationInfo.size);
 regularStabilizer := Stabilizer(permutationGroup, zeroSet, OnSets);;

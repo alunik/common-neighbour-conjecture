@@ -35,8 +35,8 @@ case.
 ## Running the computation
 
 The requirements are GAP with the `atlasrep` package, a C++17 compiler, and
-Python 3.  No precomputed orbit data is used.  Intermediate files are made in
-a fresh temporary directory and removed at the end.
+Python 3.10 or later. No precomputed orbit data is used. Intermediate files
+are made in a fresh temporary directory and removed at the end.
 
 This is a large computation and should be submitted on CREATE:
 
@@ -45,6 +45,6 @@ cd sporadic/large/co1_f8
 sbatch run_create.slurm
 ```
 
-The shell driver is `run.sh`.  `GAP`, `CXX`, `JOBS`, and `TRIALS` may be set
-in the environment; the defaults are `gap`, `g++`, four workers, and 128
-summand trials per target.
+The shell driver is `run.sh`. `GAP_BIN`, `PYTHON_BIN`, `CXX`, `JOBS`, and
+`TRIALS` may be set in the environment. The defaults are `gap`, `python3`,
+`g++`, four workers, and 128 summand trials per target.

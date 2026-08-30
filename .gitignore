@@ -3,6 +3,8 @@ build/
 *.o
 *.pyc
 __pycache__/
+slurm-*.out
+slurm-*.err
 /lean/.lake/
 /lean/.lean-tmp/
 *.olean

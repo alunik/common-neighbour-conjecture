@@ -1,8 +1,9 @@
 # Export centralizer actions on prime-order eigenline sets for
-# 3.Fi22 <= GL(27,4).  These files are consumed by orbit_bfs.cpp.
+# 3.Fi22 <= GL(27,4). These files are consumed by
+# enumerate_inner_orbits.cpp.
 #
-# The class representatives are the ATLAS cyclic-program representatives
-# recorded by w1_results.g.  A centralizer generator in the faithful
+# The class representatives are obtained from ATLAS straight-line programs
+# in common standard generators. A centralizer generator in the faithful
 # degree-3510 Fi22 action is lifted by its word in the common standard
 # generators.  The lift can commute with the chosen matrix representative
 # only modulo the scalar centre, so the exporter explicitly records the

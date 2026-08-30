@@ -39,7 +39,7 @@ MonomialGen := function(dim, images, signs)
 end;;
 
 VerifySaxlCounterexample := function(gens, dim, expOrder, expHoles)
-  local F, H, q, num, expo, ffe, vfn, ktest, k, seen, reps, sizes, Rset,
+  local F, H, q, num, expo, ffe, vfn, tests, k, seen, reps, sizes, Rset,
         v0, queue, head, v, w, kk, g, i, t, in2R, in3R, holes, Rnums;
 
   F := GF(3);
@@ -76,8 +76,8 @@ VerifySaxlCounterexample := function(gens, dim, expOrder, expHoles)
     ConvertToVectorRep(vec, 3);
     return vec;
   end;
-  for ktest in [1..50] do
-    k := Random(1, q);
+  tests := Set(List([0..49], t -> 1 + QuoInt(t * (q - 1), 49)));
+  for k in tests do
     Require(num(vfn(k)) = k, "numbering self-test failed");
   od;
 

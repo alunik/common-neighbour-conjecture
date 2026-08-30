@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=fi22-summary
-#SBATCH --partition=cpu
 #SBATCH --time=00:15:00
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=2G

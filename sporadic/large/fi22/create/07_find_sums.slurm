@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=fi22-find-sums
-#SBATCH --partition=cpu
 #SBATCH --time=08:00:00
 #SBATCH --cpus-per-task=64
 #SBATCH --mem=24G

@@ -9,7 +9,7 @@
 // involution families.
 //
 // Usage:
-//   outer_target_merge OUT1 OUT2 OUT3 INNER_SCREEN OUTPUT
+//   combine_targets OUT1 OUT2 OUT3 INNER_SCREEN OUTPUT
 
 #include <array>
 #include <cstdint>

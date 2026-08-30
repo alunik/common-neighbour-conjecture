@@ -1,4 +1,4 @@
-# The twisted wreath seed (Lemma 5.1 of the paper).
+# The twisted wreath input (Lemma 5.1 of the paper).
 #
 # In the coordinate model of the twisted wreath product A5 twr S6, with
 # transversal a_1 = (), a_i = (1 i) and q_{p,i} = a_i^-1 * p * a_{i^p},
@@ -66,5 +66,5 @@ for p in Elements(S6) do
   fi;
 od;
 
-Print("twisted wreath seed: all 720 fibre checks passed\n");
+Print("twisted wreath input: all 720 cycle checks passed\n");
 QUIT;

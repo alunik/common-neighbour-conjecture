@@ -1,4 +1,4 @@
-# Independent exact census for the two A5^6 twisted-wreath seeds.
+# Independent exact census for the A5^6 twisted-wreath input.
 #
 # If L <= P0, an L-fixed point in the induced-function model is determined
 # independently on every double coset LxQ0.  Its value on LxQ0 must be fixed
@@ -9,7 +9,7 @@
 #
 # Inverting the table of marks decomposes the A5^6 action into transitive
 # P0-sets.  Entry 1 is the number of regular P0-orbits.  This computation is
-# independent of the C++ coordinate-cycle union used to construct NR.
+# independent of the coordinate-cycle calculation used for the witness.
 
 SizeScreen([1000, 24]);
 
@@ -56,7 +56,7 @@ Census := function(P, Q, T, label, expected_regular, expected_nonregular)
     Error("nonregular-point count mismatch");
   fi;
   Print(
-    "CENSUS seed=", label,
+    "CENSUS case=", label,
     " top_order=", Size(P),
     " degree=", degree,
     " subgroup_classes=", Length(marks),
@@ -67,11 +67,6 @@ Census := function(P, Q, T, label, expected_regular, expected_nonregular)
     "\n"
   );
 end;
-
-P := AlternatingGroup(6);
-Q := Stabilizer(P, 1);
-T := Q;
-Census(P, Q, T, "a6", 129592580, 2671200);
 
 P := SymmetricGroup(6);
 Q := Stabilizer(P, 1);

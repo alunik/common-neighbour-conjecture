@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=fi22-inner-orbits
-#SBATCH --partition=cpu
 #SBATCH --time=08:00:00
 #SBATCH --cpus-per-task=32
 #SBATCH --mem=64G

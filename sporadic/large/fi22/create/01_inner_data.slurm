@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=fi22-inner-data
-#SBATCH --partition=cpu
 #SBATCH --time=04:00:00
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=24G

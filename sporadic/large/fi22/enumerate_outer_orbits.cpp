@@ -7,7 +7,7 @@
 // core.  All 2^27 vectors, including zero, are partitioned into orbits.
 //
 // Usage:
-//   outer_orbit_bfs INPUT OUTPUT THREADS
+//   enumerate_outer_orbits INPUT OUTPUT THREADS
 
 #include <algorithm>
 #include <array>

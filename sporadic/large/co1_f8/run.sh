@@ -6,13 +6,18 @@
 set -euo pipefail
 
 source_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-gap_bin=${GAP:-gap}
+gap_bin=${GAP_BIN:-gap}
+python_bin=${PYTHON_BIN:-python3}
 cxx=${CXX:-g++}
 jobs=${JOBS:-4}
 trials=${TRIALS:-128}
 
 if ! command -v "$gap_bin" >/dev/null 2>&1; then
-    echo "GAP was not found; set GAP to the GAP executable." >&2
+    echo "GAP was not found; set GAP_BIN to the GAP executable." >&2
+    exit 1
+fi
+if ! command -v "$python_bin" >/dev/null 2>&1; then
+    echo "Python was not found; set PYTHON_BIN to the Python executable." >&2
     exit 1
 fi
 if ! command -v "$cxx" >/dev/null 2>&1; then
@@ -71,14 +76,14 @@ seq 1 "$pair_count" | xargs -P "$jobs" -I '{}' bash -c '
         "$work_dir/triple_orbits/pair-$pair.tsv"
 ' _ '{}'
 
-python3 "$source_dir/merge_orbits.py" \
+"$python_bin" "$source_dir/merge_orbits.py" \
     "$work_dir/pair_orbits.tsv" \
     "$work_dir/triple_orbits" \
     "$work_dir/orbits.tsv" \
     "$work_dir/pair_summary.tsv"
 
 # Determine the permutation of Co1-orbits induced by multiplication by eta.
-python3 "$source_dir/scalar_queries.py" \
+"$python_bin" "$source_dir/scalar_queries.py" \
     "$work_dir/orbits.tsv" "$work_dir/scalars/queries.tsv"
 "$work_dir/bin/normalize_queries" \
     "$work_dir/group_data.txt" \
@@ -98,7 +103,7 @@ seq 1 "$pair_count" | xargs -P "$jobs" -I '{}' bash -c '
         "$work_dir/$phase/classified/pair-$pair.tsv"
 ' _ '{}'
 
-python3 "$source_dir/scalar_orbits.py" \
+"$python_bin" "$source_dir/scalar_orbits.py" \
     "$work_dir/orbits.tsv" \
     "$work_dir/scalars/classified" \
     "$work_dir/regular_orbits.tsv" \
@@ -129,7 +134,7 @@ seq 1 "$pair_count" | xargs -P "$jobs" -I '{}' bash -c '
         "$work_dir/$phase/classified/pair-$pair.tsv"
 ' _ '{}'
 
-python3 "$source_dir/check_sums.py" \
+"$python_bin" "$source_dir/check_sums.py" \
     "$work_dir/regular_orbits.tsv" \
     "$work_dir/sums/candidates.tsv" \
     "$work_dir/sums/classified"

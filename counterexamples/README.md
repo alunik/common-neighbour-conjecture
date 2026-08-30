@@ -1,7 +1,8 @@
-# The five affine counterexamples
+# Affine counterexamples
 
-One self-contained GAP file per counterexample listed in the computational
-section of the paper.  Each file constructs the point stabiliser
+The first four files below are the counterexamples listed in Section 7 of the
+paper. The fifth supports the perfect-stabiliser example in Proposition 3.5.
+Each file constructs the point stabiliser
 `H <= GL(d, 3)`, and the shared verifier [`verify.g`](verify.g) then checks
 that `H` is irreducible with exactly one regular orbit `R` on `V = GF(3)^d`,
 that exactly the stated number of vectors lie outside `R + R`, and that all
@@ -20,6 +21,6 @@ Run from this directory with, for example,
 
     gap -q degree_19683.g
 
-Each file needs only core GAP, prints the checks it performs, stops with an
-error if any check fails, and finishes in seconds (about twenty seconds for
-the last one).
+The first four files need only core GAP. The perfect-stabiliser example uses
+the PrimGrp library through `AllPrimitiveGroups`. Each file prints the checks
+it performs and stops with an error if any check fails.

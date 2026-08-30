@@ -1,4 +1,4 @@
-// orbit_bfs.cpp — generic eigenline-orbit BFS for the 3.Fi22 census.
+// Exhaustive eigenline-orbit BFS for the 3.Fi22 calculation.
 //
 // Input: a cls_XX.txt file describing an F4-linear action of centralizer
 // generators on a disjoint union of eigenspace blocks (dims d_b <= 21),
@@ -12,7 +12,7 @@
 // GF(4) code: 0,1,2,3 = 0, 1, w, w^2  (bit0 = a, bit1 = b for x = a + b w).
 // Packed vectors: coordinate i in bits (2i, 2i+1), dim <= 21 -> 42 bits.
 //
-// Usage: orbit_bfs <clsfile> <outfile> <nthreads>
+// Usage: enumerate_inner_orbits <clsfile> <outfile> <nthreads>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -277,7 +277,7 @@ int main(int argc, char **argv) {
   if (!visited) die("visited alloc failed");
   FILE *out = fopen(argv[2], "w");
   if (!out) die("outfile");
-  fprintf(out, "# orbit_bfs class %s cent %lld total %llu\n",
+  fprintf(out, "# enumerate_inner_orbits class %s cent %lld total %llu\n",
           clsName.c_str(), centOrder, (unsigned long long)TOTAL);
 
   uint64_t nOrbits = 0, nVisited = 0;

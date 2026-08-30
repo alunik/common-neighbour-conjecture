@@ -9,12 +9,14 @@
 # with basis b_i = e_i - e_16 for i < 16; a vector in the subspace has
 # coordinates c_i equal to its entries at the positions i < 16.
 
+if LoadPackage("primgrp") = fail then Error("PrimGrp is required"); fi;
 Read("verify.g");
 
 P16 := AllPrimitiveGroups(NrMovedPoints, 16, Size, 322560);;
 Require(Length(P16) = 1,
         "AGL(4,2) should be the unique primitive group of degree 16 and order 322560");
 P16 := P16[1];;
+Require(IsPerfectGroup(P16), "AGL(4,2) should be perfect");
 
 F := GF(3);;
 deleted := function(pi)
