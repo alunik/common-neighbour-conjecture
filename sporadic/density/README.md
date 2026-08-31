@@ -1,7 +1,12 @@
 # Density computations
 
-This directory contains the two sporadic cases settled by a density
-argument.  In both cases, if `R` is the set of nonzero regular vectors in
+This directory contains two short density calculations.  Two further cases
+use regular-orbit counts followed by the same projective-density argument;
+they are under [`regular_orbits/co1_f9`](../regular_orbits/co1_f9/) and
+[`regular_orbits/suz6_f19`](../regular_orbits/suz6_f19/).  Thus four of the
+ten sporadic cases are settled by density in total.
+
+In every density case, if `R` is the set of nonzero regular vectors in
 `GF(q)^d`, the calculation proves
 
 ```text
@@ -11,7 +16,7 @@ argument.  In both cases, if `R` is the set of nonzero regular vectors in
 The elementary projective-density lemma then gives `R + R = V`, which is the
 common-neighbour condition for the corresponding affine group.
 
-The two cases are:
+The two cases housed in this directory are:
 
 - `Co3` on its 23-dimensional module over `GF(5)`;
 - `3.Suz` on its 12-dimensional module, extended from `GF(4)` to `GF(16)`.
