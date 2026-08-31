@@ -1,26 +1,26 @@
 # Diagonal-type groups
 
-This directory contains separate source for simple-diagonal and
-compound-diagonal groups. The Magma programs enumerate the admissible shapes
-and quotient groups and apply exact fixed-point-ratio and
-partial-transversal bounds. The Python programs perform the full-wreath
-partition and Hall reductions. The C++ programs resolve the residual
-`A5`-component orbit-incidence cases.
+This directory uses the five-family O'Nan--Scott convention used by Huang and
+by Liebeck, Praeger and Saxl. Thus diagonal type here is the family often
+called simple diagonal (SD) in the refined terminology. Product actions with
+a diagonal-type component, often called compound diagonal (CD), belong to
+product type in this convention and are not included here. The paper already
+provides product-type counterexamples, so no positive claim about that family
+is intended in this directory.
 
-- [`up-to-1e18/`](up-to-1e18/) contains the first range of simple- and
-  compound-diagonal calculations.
-- [`up-to-1e24/`](up-to-1e24/) extends the shape enumeration and bounds and
-  contains the additional six-component exact calculations.
-- [`shared/`](shared/) contains the finite-group action tables and coupled
-  orbit engines reused by the exact C++ programs.
+The Magma programs enumerate the admissible SD shapes and apply exact
+fixed-point-ratio bounds. The seven residual cases, with `T = A5` and
+`8 <= k <= 14`, are resolved by exact rigid-subset and partial-transversal
+bounds.
 
-The source directories contain no enumerated quotient lists, saved outputs,
-or certificates. Required inputs are produced by the preceding Magma source
-in the same directory.
+- [`up-to-1e18/`](up-to-1e18/) contains the first window,
+  `10^8 < n <= 10^18`.
+- [`up-to-1e24/`](up-to-1e24/) contains the extension window,
+  `10^18 < n <= 10^24`.
+- [`shared/`](shared/) contains exact small diagonal-action tables and
+  common-neighbour engines, some of which are also reused by the low-degree
+  non-affine search.
 
-`up-to-1e24/sd_factorized_fpr_fixed_coordinate.m` is retained as an
-independent reference calculation. The current
-`a5_k3_cd_correlated_m6_exact.cpp` contains a corrected base-six encoding and
-is not byte-identical to the earlier run source. It is published as the
-corrected current implementation, not as an archival source snapshot. This
-revision has not been rerun as part of the present source-only release.
+The source directories contain no generated shape inventories, saved
+outputs, or certificates. `up-to-1e24/sd_factorized_fpr_fixed_coordinate.m`
+is retained as an independent reference calculation.

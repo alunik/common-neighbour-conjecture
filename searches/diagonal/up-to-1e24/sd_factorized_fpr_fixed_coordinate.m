@@ -1,9 +1,9 @@
 ///////////////////////////////////////////////////////////////////////////
 // Independent exact SD fixed-point-ratio preflight for the full normalizer.
 //
-// This is the same factorized Aut(T) x S_k calculation as
-// sd_factorized_fpr.m, still constructing the ambient group and asking Magma
-// for every G-centralizer.  It removes only impossible conjugacy tests: when
+// This factorized Aut(T) x S_k calculation still constructs the ambient group
+// and asks Magma for every G-centralizer.  It removes only impossible
+// conjugacy tests: when
 // the top permutation fixes a coordinate, that coordinate pins the Aut(T)
 // class, so its H-class cannot fuse with a previously listed H-class.  When
 // there is no fixed coordinate, fusion is still decided by IsConjugate in G.

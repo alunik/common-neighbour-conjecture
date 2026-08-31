@@ -45,7 +45,6 @@ def main() -> None:
 
     simples: list[dict[str, object]] = []
     sd: list[dict[str, object]] = []
-    cd: list[dict[str, object]] = []
     summary: dict[str, int] | None = None
 
     for line in transcript_text.splitlines():
@@ -57,35 +56,25 @@ def main() -> None:
             sd.append({"simple_id": int(row["sid"]), "name": row["name"],
                        "order": int(row["order"]), "k": int(row["k"]),
                        "degree": int(row["degree"])})
-        elif kind == "CD_SHAPE":
-            cd.append({"simple_id": int(row["sid"]), "name": row["name"],
-                       "order": int(row["order"]), "k": int(row["k"]),
-                       "component_degree": int(row["component_degree"]),
-                       "m": int(row["m"]), "degree": int(row["degree"])})
         elif kind == "SHAPE_SUMMARY":
             summary = {key: int(value) for key, value in row.items()}
 
-    assert summary == {"simple_groups": 277, "sd_shapes": 357,
-                       "cd_shapes": 39, "max_k": 11, "max_m": 5}
+    assert summary == {"simple_groups": 277, "sd_shapes": 357, "max_k": 11}
     assert len(simples) == 277 and [r["simple_id"] for r in simples] == list(range(1, 278))
-    assert len(sd) == 357 and len(cd) == 39
-    assert all(100_000_000 < int(r["degree"]) <= 10**18 for r in sd + cd)
+    assert len(sd) == 357
+    assert all(100_000_000 < int(r["degree"]) <= 10**18 for r in sd)
     assert max(int(r["k"]) for r in sd) == 11
-    assert max(int(r["m"]) for r in cd) == 5
 
     inventory = {
-        "schema": "NONAFFINE_DIAGONAL_1E18_ARITHMETIC_INVENTORY_V1",
+        "schema": "DIAGONAL_SD_1E18_ARITHMETIC_INVENTORY_V1",
         "degree_window": {"minimum_exclusive": 100_000_000,
                           "maximum_inclusive": 10**18},
         "simple_groups": simples,
         "sd_shapes": sorted(sd, key=lambda r: (int(r["degree"]), int(r["simple_id"]), int(r["k"]))),
-        "cd_shapes": sorted(cd, key=lambda r: (int(r["degree"]), int(r["simple_id"]),
-                                                int(r["k"]), int(r["m"]))),
         "counts": summary,
         "routing": {
             "sd_non_ak_sk": "huang_thesis_theorem_5_6",
             "sd_ak_sk": "full_normalizer_fpr_then_residual",
-            "cd": "component_full_wreath_density_then_exact_rainbow_residual",
         },
     }
     payload = canonical(inventory)
@@ -96,7 +85,7 @@ def main() -> None:
     digest = hashlib.sha256(payload).hexdigest()
     (args.output / "ARITHMETIC_INVENTORY.sha256").write_text(
         f"{digest}  ARITHMETIC_INVENTORY.json\n")
-    print(f"DIAGONAL_1E18_INVENTORY_OK sd=357 cd=39 sha256={digest}")
+    print(f"DIAGONAL_SD_1E18_INVENTORY_OK sd=357 sha256={digest}")
 
 
 if __name__ == "__main__":

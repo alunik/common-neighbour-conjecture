@@ -14,7 +14,7 @@ used on each compute node.
 | affine groups with soluble stabiliser | [`affine-soluble/`](affine-soluble/) |
 | affine groups with insoluble stabiliser | [`affine-insoluble/`](affine-insoluble/) |
 | non-affine groups through degree `10^8` | [`nonaffine/`](nonaffine/) |
-| simple- and compound-diagonal groups through degree `10^24` | [`diagonal/`](diagonal/) |
+| diagonal-type groups with `10^8 < n <= 10^24` | [`diagonal/`](diagonal/) |
 
 The shared exact graph engines are in [`engines/`](engines/). GAP and Magma
 construct the relevant groups and export exact actions. The C++ programs

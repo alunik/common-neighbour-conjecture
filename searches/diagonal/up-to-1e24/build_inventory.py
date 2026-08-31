@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build and audit the canonical 10^18 < n <= 10^24 shape inventory."""
+"""Build and audit the canonical 10^18 < n <= 10^24 SD shape inventory."""
 
 from __future__ import annotations
 
@@ -65,7 +65,6 @@ def main() -> None:
     require(completed.stderr == "", f"unexpected Magma stderr: {completed.stderr}")
     simples: list[dict[str, Any]] = []
     sd: list[dict[str, Any]] = []
-    cd: list[dict[str, Any]] = []
     summary: dict[str, int] | None = None
     cutoff: dict[str, int] | None = None
     for line in completed.stdout.splitlines():
@@ -79,11 +78,6 @@ def main() -> None:
             sd.append({"simple_id": int(row["sid"]), "name": row["name"],
                        "order": int(row["order"]), "k": int(row["k"]),
                        "degree": int(row["degree"])})
-        elif kind == "CD_SHAPE":
-            cd.append({"simple_id": int(row["sid"]), "name": row["name"],
-                       "order": int(row["order"]), "k": int(row["k"]),
-                       "component_degree": int(row["component_degree"]),
-                       "m": int(row["m"]), "degree": int(row["degree"])})
         elif kind == "CATALOGUE_CUTOFF":
             cutoff = {key: int(value) for key, value in row.items()}
         elif kind == "SHAPE_SUMMARY":
@@ -94,12 +88,13 @@ def main() -> None:
             simples[-1]["order"] <= SIMPLE_LIMIT < cutoff["next_order"] and
             cutoff["next_sid"] == len(simples) + 1 and cutoff["limit"] == SIMPLE_LIMIT,
             "simple catalogue cutoff mismatch")
-    require(len(sd) == summary["sd_shapes"] and len(cd) == summary["cd_shapes"] and
-            all(LOWER < int(row["degree"]) <= UPPER for row in sd + cd),
+    require(len(sd) == summary["sd_shapes"] and
+            all(LOWER < int(row["degree"]) <= UPPER for row in sd),
             "shape census/window mismatch")
+    require(summary == {"simple_groups": 1650, "sd_shapes": 1556, "max_k": 14},
+            "unexpected SD census")
     simple_by_id = {int(row["simple_id"]): row for row in simples}
     expected_sd = set()
-    expected_cd = set()
     for sid, simple in simple_by_id.items():
         order = int(simple["order"])
         component = order**2
@@ -107,33 +102,20 @@ def main() -> None:
         while component <= UPPER:
             if component > LOWER:
                 expected_sd.add((sid, k, component))
-            compound = component**2
-            m = 2
-            while compound <= UPPER:
-                if compound > LOWER:
-                    expected_cd.add((sid, k, m, component, compound))
-                compound *= component
-                m += 1
             component *= order
             k += 1
     observed_sd = {(int(row["simple_id"]), int(row["k"]), int(row["degree"]))
                    for row in sd}
-    observed_cd = {(int(row["simple_id"]), int(row["k"]), int(row["m"]),
-                    int(row["component_degree"]), int(row["degree"])) for row in cd}
-    require(observed_sd == expected_sd and observed_cd == expected_cd,
-            "independent arithmetic replay mismatch")
-    require(summary["max_k"] == max(int(row["k"]) for row in sd) and
-            summary["max_m"] == max(int(row["m"]) for row in cd),
+    require(observed_sd == expected_sd, "independent arithmetic replay mismatch")
+    require(summary["max_k"] == max(int(row["k"]) for row in sd),
             "maximum parameter mismatch")
     value = {
-        "schema": "NONAFFINE_DIAGONAL_1E24_ARITHMETIC_INVENTORY_V1",
+        "schema": "DIAGONAL_SD_1E24_ARITHMETIC_INVENTORY_V1",
         "degree_window": {"minimum_exclusive": LOWER, "maximum_inclusive": UPPER},
         "simple_order_limit": SIMPLE_LIMIT,
         "catalogue_cutoff": cutoff,
         "simple_groups": simples,
         "sd_shapes": sorted(sd, key=lambda row: (row["degree"], row["simple_id"], row["k"])),
-        "cd_shapes": sorted(cd, key=lambda row: (row["degree"], row["simple_id"],
-                                                  row["k"], row["m"])),
         "counts": summary,
     }
     args.output_dir.mkdir(parents=True, exist_ok=False)
@@ -143,8 +125,8 @@ def main() -> None:
     create(inventory, canonical(value))
     create(args.output_dir / "ARITHMETIC_INVENTORY.sha256",
            f"{sha256_file(inventory)}  ARITHMETIC_INVENTORY.json\n".encode())
-    print("DIAGONAL_1E24_INVENTORY_OK "
-          f"simple={len(simples)} sd={len(sd)} cd={len(cd)} "
+    print("DIAGONAL_SD_1E24_INVENTORY_OK "
+          f"simple={len(simples)} sd={len(sd)} "
           f"sha256={sha256_file(inventory)}")
 
 

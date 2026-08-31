@@ -80,7 +80,7 @@ struct ExtendedTotals {
   int cases = 0;
   int applicable = 0;
   int starstar_fail = 0;
-  int hall_fail = 0;
+  int common_neighbour_fail = 0;
 };
 
 void accumulate(
@@ -91,7 +91,7 @@ void accumulate(
   totals.applicable += result.applicable;
   if (!arguments.census_only && result.applicable) {
     totals.starstar_fail += !result.starstar;
-    totals.hall_fail += !result.hall;
+    totals.common_neighbour_fail += !result.common_neighbour;
   }
 }
 
@@ -103,7 +103,7 @@ void accumulate(
   totals.applicable += result.applicable;
   if (!arguments.census_only && result.applicable) {
     totals.starstar_fail += !result.starstar;
-    totals.hall_fail += !result.hall;
+    totals.common_neighbour_fail += !result.common_neighbour;
   }
 }
 
@@ -113,15 +113,11 @@ int main(int argc, char** argv) {
   try {
     const ExtendedArguments arguments =
         parse_extended_arguments(argc, argv);
-    std::cout << "ENGINE|name=coupled_extended|schema=1"
+    std::cout << "ENGINE|name=coupled_extended|schema=2"
               << "|selected_case=" << arguments.selected_case
               << "|mode="
               << (arguments.census_only ? "census" : "exact")
               << "|exactness=combined_generators_integer_H_orbits\n";
-    psl_coupled_source::coupled_matching_self_test();
-    a7_coupled_source::coupled_matching_self_test();
-    std::cout << "MATCHING_SELF_TEST|implementations=2|status=PASS\n";
-
     ExtendedTotals totals;
     if (arguments.selected_case < 0 ||
         arguments.selected_case == 0) {
@@ -166,15 +162,16 @@ int main(int argc, char** argv) {
     std::cout << "COUPLED_RUN_RESULT|cases=" << totals.cases
               << "|applicable=" << totals.applicable
               << "|starstar_fail=" << totals.starstar_fail
-              << "|hall_fail=" << totals.hall_fail
+              << "|common_neighbour_fail="
+              << totals.common_neighbour_fail
               << "|status="
-              << (totals.hall_fail == 0
+              << (totals.common_neighbour_fail == 0
                       ? (arguments.census_only
                              ? "CENSUS_PASS"
                              : "ALL_PASS")
                       : "COUNTEREXAMPLE_FOUND")
               << '\n';
-    return totals.hall_fail == 0 ? 0 : 2;
+    return totals.common_neighbour_fail == 0 ? 0 : 2;
   } catch (const std::exception& error) {
     std::cerr << "ERROR|" << error.what() << '\n';
     return 1;

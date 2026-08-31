@@ -3,10 +3,8 @@
 
 #include <algorithm>
 #include <cstdint>
-#include <functional>
 #include <iostream>
 #include <limits>
-#include <queue>
 #include <stdexcept>
 #include <string>
 #include <utility>
@@ -95,126 +93,6 @@ CoupledOrbitData coupled_stabiliser_orbits(
   return orbit;
 }
 
-struct CoupledMatching {
-  int size = 0;
-  std::vector<int> right_of_left;
-  std::vector<int> left_of_right;
-};
-
-CoupledMatching coupled_maximum_matching(
-    const std::vector<std::vector<std::uint8_t>>& adjacency) {
-  const int r = static_cast<int>(adjacency.size());
-  CoupledMatching answer;
-  answer.right_of_left.assign(r, -1);
-  answer.left_of_right.assign(r, -1);
-  std::function<bool(int, std::vector<std::uint8_t>&)> augment =
-      [&](int left, std::vector<std::uint8_t>& seen) {
-        for (int right = 0; right < r; ++right) {
-          if (!adjacency[left][right] || seen[right]) continue;
-          seen[right] = 1;
-          const int displaced = answer.left_of_right[right];
-          if (displaced < 0 || augment(displaced, seen)) {
-            answer.right_of_left[left] = right;
-            answer.left_of_right[right] = left;
-            return true;
-          }
-        }
-        return false;
-      };
-  for (int left = 0; left < r; ++left) {
-    std::vector<std::uint8_t> seen(r, 0);
-    if (augment(left, seen)) ++answer.size;
-  }
-  return answer;
-}
-
-struct CoupledHallDefect {
-  std::vector<int> left;
-  std::vector<int> neighbours;
-};
-
-CoupledHallDefect coupled_extract_hall_defect(
-    const std::vector<std::vector<std::uint8_t>>& adjacency,
-    const CoupledMatching& matching) {
-  const int r = static_cast<int>(adjacency.size());
-  if (matching.size >= r) {
-    throw std::runtime_error(
-        "requested coupled Hall defect from perfect matching");
-  }
-  std::vector<std::uint8_t> reached_left(r, 0);
-  std::vector<std::uint8_t> reached_right(r, 0);
-  std::queue<std::pair<bool, int>> queue;
-  for (int left = 0; left < r; ++left) {
-    if (matching.right_of_left[left] >= 0) continue;
-    reached_left[left] = 1;
-    queue.emplace(false, left);
-  }
-  while (!queue.empty()) {
-    const auto [right_side, vertex] = queue.front();
-    queue.pop();
-    if (!right_side) {
-      const int matched = matching.right_of_left[vertex];
-      for (int right = 0; right < r; ++right) {
-        if (!adjacency[vertex][right] || right == matched ||
-            reached_right[right]) {
-          continue;
-        }
-        reached_right[right] = 1;
-        queue.emplace(true, right);
-      }
-    } else {
-      const int left = matching.left_of_right[vertex];
-      if (left >= 0 && !reached_left[left]) {
-        reached_left[left] = 1;
-        queue.emplace(false, left);
-      }
-    }
-  }
-
-  CoupledHallDefect answer;
-  std::vector<std::uint8_t> actual_neighbours(r, 0);
-  for (int left = 0; left < r; ++left) {
-    if (!reached_left[left]) continue;
-    answer.left.push_back(left);
-    for (int right = 0; right < r; ++right) {
-      actual_neighbours[right] |= adjacency[left][right];
-    }
-  }
-  for (int right = 0; right < r; ++right) {
-    if (actual_neighbours[right]) answer.neighbours.push_back(right);
-    if (actual_neighbours[right] != reached_right[right]) {
-      throw std::runtime_error(
-          "coupled alternating-tree neighbourhood mismatch");
-    }
-  }
-  if (answer.left.size() <= answer.neighbours.size()) {
-    throw std::runtime_error(
-        "coupled alternating-tree set is not Hall-deficient");
-  }
-  return answer;
-}
-
-void coupled_matching_self_test() {
-  const std::vector<std::vector<std::uint8_t>> perfect = {
-      {1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
-  if (coupled_maximum_matching(perfect).size != 3) {
-    throw std::runtime_error(
-        "coupled perfect matching self-test failed");
-  }
-  const std::vector<std::vector<std::uint8_t>> deficient = {
-      {1, 0, 0}, {1, 0, 0}, {0, 1, 1}};
-  const CoupledMatching matching =
-      coupled_maximum_matching(deficient);
-  const CoupledHallDefect defect =
-      coupled_extract_hall_defect(deficient, matching);
-  if (matching.size != 2 ||
-      defect.left != std::vector<int>({0, 1}) ||
-      defect.neighbours != std::vector<int>({0})) {
-    throw std::runtime_error(
-        "coupled Hall-defect self-test failed");
-  }
-}
-
 void coupled_print_indices(const std::vector<int>& values) {
   std::cout << '[';
   for (std::size_t index = 0; index < values.size(); ++index) {
@@ -227,15 +105,14 @@ void coupled_print_indices(const std::vector<int>& values) {
 struct CoupledCaseResult {
   bool applicable = false;
   bool starstar = false;
-  bool hall = false;
+  bool common_neighbour = false;
   int r = 0;
   int h_orbits = 0;
   std::uint64_t regular_points = 0;
   int minimum_met = 0;
-  int minimum_matching = 0;
   std::uint64_t minimum_common = 0;
   int starstar_defects = 0;
-  int hall_defects = 0;
+  int common_neighbour_defects = 0;
   std::uint64_t quotient_tests = 0;
 };
 
@@ -277,7 +154,6 @@ CoupledCaseResult run_coupled_case(
   result.h_orbits = static_cast<int>(orbit.points.size());
   result.regular_points = regular_points;
   result.minimum_met = result.r;
-  result.minimum_matching = result.r;
   result.minimum_common =
       std::numeric_limits<std::uint64_t>::max();
   std::cout << "COUPLED_CASE|label=" << label
@@ -317,10 +193,6 @@ CoupledCaseResult run_coupled_case(
     }
     std::vector<std::vector<std::uint8_t>> adjacency(
         result.r, std::vector<std::uint8_t>(result.r, 0));
-    std::vector<std::vector<Code>> edge_witness(
-        result.r,
-        std::vector<Code>(
-            result.r, std::numeric_limits<Code>::max()));
     std::uint64_t common = 0;
 
     for (int left = 0; left < result.r; ++left) {
@@ -338,10 +210,6 @@ CoupledCaseResult run_coupled_case(
         if (right < 0) continue;
         ++common;
         adjacency[left][right] = 1;
-        if (edge_witness[left][right] ==
-            std::numeric_limits<Code>::max()) {
-          edge_witness[left][right] = lambda;
-        }
         for (int coordinate = 0;
              coordinate < space.coordinates; ++coordinate) {
           if (group.multiply(
@@ -388,48 +256,9 @@ CoupledCaseResult run_coupled_case(
       std::cout << "]|certificate=no_point_of_Lambda_i*x^-1_in_R\n";
     }
 
-    const CoupledMatching matching =
-        coupled_maximum_matching(adjacency);
-    result.minimum_matching =
-        std::min(result.minimum_matching, matching.size);
-    if (matching.size == result.r) {
-      for (int left = 0; left < result.r; ++left) {
-        const int right = matching.right_of_left[left];
-        if (right < 0 ||
-            edge_witness[left][right] ==
-                std::numeric_limits<Code>::max()) {
-          throw std::runtime_error(
-              "coupled matching edge has no point witness");
-        }
-      }
-    } else {
-      ++result.hall_defects;
-      const CoupledHallDefect defect =
-          coupled_extract_hall_defect(adjacency, matching);
-      std::cout << "COUPLED_HALL_DEFECT|label=" << label
-                << "|target_H_orbit=" << target_oid + 1
-                << "|target_code=" << target
-                << "|target=";
-      print_digits(space, target);
-      std::cout << "|matching=" << matching.size << '/' << result.r
-                << "|left_subset=";
-      coupled_print_indices(defect.left);
-      std::cout << "|right_neighbourhood=";
-      coupled_print_indices(defect.neighbours);
-      std::cout << "|left_size=" << defect.left.size()
-                << "|neighbourhood_size="
-                << defect.neighbours.size()
-                << "|CD_lift=L_wr_S" << result.r
-                << "|CD_socle=" << group.name
-                << "^" << k * result.r
-                << "|CD_degree=" << group.order
-                << "^" << (k - 1) * result.r
-                << "|endpoint_rho=origin^" << result.r
-                << "|endpoint_sigma=target^" << result.r
-                << '\n';
-    }
     if (common == 0) {
-      std::cout << "COUPLED_SD_COUNTEREXAMPLE|label=" << label
+      ++result.common_neighbour_defects;
+      std::cout << "COUPLED_COMMON_NEIGHBOUR_DEFECT|label=" << label
                 << "|target_H_orbit=" << target_oid + 1
                 << "|target_code=" << target
                 << "|target=";
@@ -444,7 +273,6 @@ CoupledCaseResult run_coupled_case(
                 << "|common=" << common
                 << "|incidence_edges=" << edges
                 << "|minimum_row_degree=" << met
-                << "|matching=" << matching.size << '/' << result.r
                 << '\n';
     }
     if (progress && (target_oid + 1) % 25 == 0) {
@@ -452,26 +280,27 @@ CoupledCaseResult run_coupled_case(
                 << "|targets=" << target_oid + 1
                 << '/' << orbit.points.size()
                 << "|quotient_tests=" << result.quotient_tests
-                << "|hall_defects=" << result.hall_defects
+                << "|starstar_defects=" << result.starstar_defects
                 << '\n';
     }
   }
 
   result.starstar = result.minimum_met > 0;
-  result.hall = result.hall_defects == 0;
+  result.common_neighbour = result.common_neighbour_defects == 0;
   std::cout << "COUPLED_STARSTAR_RESULT|label=" << label
             << "|status=" << (result.starstar ? "PASS" : "FAIL")
             << "|minimum_met=" << result.minimum_met
             << "|r=" << result.r
             << "|minimum_common=" << result.minimum_common
             << "|zero_row_targets=" << result.starstar_defects
-            << '\n';
-  std::cout << "COUPLED_HALL_RESULT|label=" << label
-            << "|status=" << (result.hall ? "PASS" : "FAIL")
-            << "|minimum_matching=" << result.minimum_matching
-            << "|r=" << result.r
-            << "|defects=" << result.hall_defects
             << "|quotient_tests=" << result.quotient_tests
+            << '\n';
+  std::cout << "COUPLED_COMMON_NEIGHBOUR_RESULT|label=" << label
+            << "|status="
+            << (result.common_neighbour ? "PASS" : "FAIL")
+            << "|minimum_common=" << result.minimum_common
+            << "|zero_common_targets="
+            << result.common_neighbour_defects
             << '\n';
   return result;
 }

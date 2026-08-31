@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////
 // Exact product-action component/layer inventory for 10^6 < d <= 10^7.
 //
-// Compound-diagonal components are handled by the separate exact CD degree
-// exclusion.  Every PA component here is almost simple, has degree n <=
-// floor(sqrt(10^7)) < 8192, and is therefore inside Magma's complete
-// primitive-group catalogue.
+// Product actions with diagonal-type components are handled by a separate
+// exact degree exclusion.  Every PA component here is almost simple, has
+// degree n <= floor(sqrt(10^7)) < 8192, and is therefore inside Magma's
+// complete primitive-group catalogue.
 ///////////////////////////////////////////////////////////////////////////
 
 if not assigned PAXMinDegree then PAXMinDegree := 1000001; end if;

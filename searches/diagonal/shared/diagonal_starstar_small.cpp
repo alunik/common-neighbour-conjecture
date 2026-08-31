@@ -932,12 +932,6 @@ CaseResult run_case(
   }
   std::cout << "|missing=";
   print_index_list(minimum_met_bitmap, false);
-  if (minimum_met < regular_oids.size()) {
-    std::cout << "|smallest_immediate_CD_lift_top=S"
-              << minimum_met + 1;
-  } else {
-    std::cout << "|smallest_immediate_CD_lift_top=none";
-  }
   std::cout << '\n';
 
   const double seconds = std::chrono::duration<double>(
@@ -981,8 +975,6 @@ CaseResult run_case(
               << "|target_H_orbits=" << orbit.points.size()
               << "|regular_orbits=" << regular_oids.size()
               << "|minimum_met_regular_orbits=" << minimum_met
-              << "|smallest_immediate_CD_lift_top=S"
-              << minimum_met + 1
               << "|pairs=" << result.pairs
               << "|missing_pairs=" << result.missing_pairs
               << "|membership_tests=" << result.membership_tests

@@ -22,19 +22,7 @@ lower := 100000000;
 upper := 1000000000000000000;
 tuple, t_order := SimpleGroupId(SD18SimpleId);
 degree := t_order^(SD18K - 1);
-if assigned SD18ComponentMode then
-    if Type(SD18ComponentMode) eq MonStgElt then
-        SD18ComponentMode := SD18ComponentMode eq "true";
-    end if;
-else
-    SD18ComponentMode := false;
-end if;
-if SD18ComponentMode then
-    require degree^2 le upper and degree^2 gt lower:
-        "component does not occur in the exact CD window";
-else
-    require lower lt degree and degree le upper: "shape outside exact SD window";
-end if;
+require lower lt degree and degree le upper: "shape outside exact SD window";
 require 3 le SD18K and SD18K le 11: "invalid SD18 k";
 
 A := AutomorphismGroupSimpleGroup(tuple);
