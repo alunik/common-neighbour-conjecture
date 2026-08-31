@@ -198,9 +198,10 @@ if (simple_tuple[1] eq 11 and simple_tuple[2] eq 2) or
     quit;
 end if;
 
-// Burness--Giudici, MPCPS 168 (2020), Theorem 5.1, plus the exact
-// degree-window audit and Morris--Spiga base-size formula recorded in
-// LITERATURE_LEDGER.md: no alternating-socle base-two target survives.
+// The exact degree-window audit in audit_alternating_window.m leaves only
+// the A15 and S15 actions on partitions into five parts of size three.
+// Morris--Spiga, J. Algebra 587 (2021), Theorems 1.1 and 1.2, give base
+// size 3 for both, so no alternating-socle base-two target survives.
 if simple_tuple[1] eq 17 then
     if ASXMode eq "metadata" then
         printf "SOCLE|%o|%o|theorem_published_alt_window|0|0|%o\n",

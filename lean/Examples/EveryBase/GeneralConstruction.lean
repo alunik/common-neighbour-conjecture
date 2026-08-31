@@ -147,7 +147,7 @@ theorem badVector_away (S : EveryBaseSeed) (K : BaseArrayColours S tail)
     {c c0 : K.C} (hne : c ≠ c0) : badVector S K c0 c = 0 := by
   simp [badVector, hne]
 
-/-- Paper Lemma 6.2 at the abstract level. Its hypotheses consist only of
+/-- Paper Lemma 6.3 at the abstract level. Its hypotheses consist only of
 finite tuple-orbit codes and the explicit binary cycle obstruction stored in
 `EveryBaseSeed`; neither irreducibility nor an external base-size theorem is
 assumed. -/
@@ -181,7 +181,7 @@ theorem abstractCoreObstruction
   rw [Saxl.generalizedAffine_hasCommonNeighbour_zero_iff_mem_add]
   exact badVector_not_mem_neighbourSumset S K c0
 
-/-- Paper Theorem 6.3 at the abstract boundary. Exact linear tuple-base
+/-- Paper Theorem 6.4 at the abstract boundary. Exact linear tuple-base
 size is an explicit hypothesis, normally discharged from a
 `RegularTupleColourTower` by `linear_exactTupleBaseSize`; no literature
 base-size formula is hidden here. -/

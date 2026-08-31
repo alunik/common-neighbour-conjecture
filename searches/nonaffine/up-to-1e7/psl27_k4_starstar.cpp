@@ -7,9 +7,9 @@
 //   A4, C2 x A4, S4, C2 x S4, graph(sign:S4 -> C2).
 //
 // We reuse the audited PSL(2,7) multiplication table and normalized diagonal
-// action maps from research/diagonal/diagonal_starstar_small.cpp.  Only the
-// case selection, exact quotient validation, concise orbit census and
-// parallel target scan are new here.
+// action maps from searches/diagonal/shared/diagonal_starstar_small.cpp.
+// Only the case selection, exact quotient validation, concise orbit census
+// and parallel target scan are new here.
 
 #define main diagonal_starstar_small_embedded_main
 #include "../../diagonal/shared/diagonal_starstar_small.cpp"

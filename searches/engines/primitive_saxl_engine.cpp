@@ -7,9 +7,9 @@
 // representatives it tests regular points one at a time and stops at the
 // first common-neighbour witness; a negative target still exhausts R.
 //
-// Build:
-//   clang++ -O3 -march=native -DNDEBUG -std=c++17
-//       src/primitive_saxl_engine.cpp -o primitive_saxl_engine
+// Build from the repository root:
+//   clang++ -O3 -march=native -DNDEBUG -std=c++17 \
+//       searches/engines/primitive_saxl_engine.cpp -o primitive_saxl_engine
 //
 // Input (multiple action blocks may follow the header):
 //   PRIMITIVE_SAXL_V1

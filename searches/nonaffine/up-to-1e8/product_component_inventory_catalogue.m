@@ -1,7 +1,8 @@
 ///////////////////////////////////////////////////////////////////////////
 // Exact catalogue-side PA component/layer inventory for
 // 10^7 < d <= 10^8.  Components 8192..10000 are constructed separately by
-// audit_pa_seam.m; this source is fail-closed at the catalogue boundary.
+// export_pa8_seam_structured.m; this source is fail-closed at the catalogue
+// boundary.
 ///////////////////////////////////////////////////////////////////////////
 
 if not assigned PAXMinDegree then PAXMinDegree := 10000001; end if;

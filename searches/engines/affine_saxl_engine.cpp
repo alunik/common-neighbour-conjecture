@@ -10,9 +10,9 @@
 //     from one representative of one operand and every vector of the other;
 //   * graph distance is computed by an exact orbit-compressed BFS.
 //
-// Build:
+// Build from the repository root:
 //   clang++ -O3 -march=native -DNDEBUG -std=c++17 \
-//       src/affine_saxl_engine.cpp -o affine_saxl_engine
+//       searches/engines/affine_saxl_engine.cpp -o affine_saxl_engine
 //
 // Input (several ACTION blocks may follow one header):
 //   AFFINE_SAXL_V1

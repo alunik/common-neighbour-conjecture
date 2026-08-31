@@ -190,8 +190,7 @@ std::array<std::uint8_t, 6> compose_permutations(
     const std::array<std::uint8_t, 6>& left,
     const std::array<std::uint8_t, 6>& right,
     int degree) {
-  // Product convention agrees with next_small_diagonal_diameter.cpp:
-  // a point is first sent by left, then by right.
+  // Product convention: a point is first sent by left, then by right.
   std::array<std::uint8_t, 6> answer{};
   for (int point = 0; point < degree; ++point) {
     answer[point] = right[left[point]];

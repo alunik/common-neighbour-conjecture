@@ -14,7 +14,7 @@ import Saxl.Basic
 
 This file gives a local affine group whose executable representation is the
 semidirect product of the additive translation group by a distributive action.
-It proves the part of paper Lemma 1.1 used by every affine construction.
+It proves the part of paper Lemma 3.1 used by every affine construction.
 -/
 
 namespace Saxl

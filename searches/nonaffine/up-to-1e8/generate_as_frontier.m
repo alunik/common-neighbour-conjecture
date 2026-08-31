@@ -923,9 +923,10 @@ if (simple_tuple[1] eq 11 and simple_tuple[2] eq 2) or
     quit;
 end if;
 
-// Burness--Giudici, MPCPS 168 (2020), Theorem 5.1, plus the exact
-// degree-window audit and Morris--Spiga base-size formula recorded in
-// LITERATURE_LEDGER.md: no alternating-socle base-two target survives.
+// The exact degree-window audit in audit_alternating_window.m shows that
+// every order-eligible row has H meet A_n primitive on the natural points.
+// Burness--Giudici, MPCPS 168 (2020), Theorem 5.1, therefore supplies the
+// common-neighbour conclusion whenever the coset action has base size two.
 if simple_tuple[1] eq 17 then
     if ASXMode eq "metadata" then
         printf "SOCLE|%o|%o|theorem_published_alt_window|0|0|%o\n",

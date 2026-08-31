@@ -4,8 +4,9 @@
 //
 // This does not calculate a base.  It applies only the necessary condition
 // |H| <= d-1 for a base-two coset action G/H, then identifies the natural
-// block system in every surviving row.  The base-size conclusion is supplied
-// separately by Morris--Spiga, Theorems 1.1 and 1.2.
+// block system in every surviving row.  Morris--Spiga, J. Algebra 587
+// (2021), 569--593, Theorems 1.1 and 1.2, give base size 3 for both
+// surviving actions (partitions into five parts of size three).
 ///////////////////////////////////////////////////////////////////////////
 
 SetColumns(0);
