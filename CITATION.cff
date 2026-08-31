@@ -4,6 +4,7 @@ type: software
 title: "Computational source code and Lean formalization for Counterexamples to common-neighbour conjectures for Saxl graphs"
 version: 1.0.1
 date-released: 2026-08-31
+doi: 10.5281/zenodo.22212778
 authors:
   - family-names: Rizzoli
     given-names: Aluna
