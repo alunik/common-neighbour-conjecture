@@ -1,6 +1,6 @@
 # Common-neighbour conjecture
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22208827.svg)](https://doi.org/10.5281/zenodo.22208827)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22208826.svg)](https://doi.org/10.5281/zenodo.22208826)
 
 This repository contains computational source code and a Lean formalization
 accompanying our paper on the common-neighbour conjecture for Saxl graphs.

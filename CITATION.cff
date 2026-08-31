@@ -2,9 +2,8 @@ cff-version: 1.2.0
 message: "If you use this software, please cite the archived release."
 type: software
 title: "Computational source code and Lean formalization for Counterexamples to common-neighbour conjectures for Saxl graphs"
-version: 1.0.0
+version: 1.0.1
 date-released: 2026-08-31
-doi: 10.5281/zenodo.22208827
 authors:
   - family-names: Rizzoli
     given-names: Aluna
