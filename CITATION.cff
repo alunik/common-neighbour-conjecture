@@ -1,10 +1,9 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite the archived release."
 type: software
-title: "Computational source code and Lean formalization for Counterexamples to common-neighbour conjectures for Saxl graphs"
-version: 1.0.1
-date-released: 2026-08-31
-doi: 10.5281/zenodo.22212778
+title: "Computational source code and Lean formalization for Common neighbour conjectures for Saxl graphs fail at every base size"
+version: 1.1.0
+date-released: 2026-09-01
 authors:
   - family-names: Rizzoli
     given-names: Aluna
@@ -12,7 +11,7 @@ authors:
     given-names: Adam R.
 license: MIT
 repository-code: "https://github.com/alunik/common-neighbour-conjecture"
-abstract: "Computational source code and a Lean 4 formalization accompanying the paper Counterexamples to common-neighbour conjectures for Saxl graphs."
+abstract: "Computational source code and a Lean 4 formalization accompanying the paper Common neighbour conjectures for Saxl graphs fail at every base size."
 keywords:
   - permutation groups
   - Saxl graphs

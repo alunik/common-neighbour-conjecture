@@ -1,9 +1,10 @@
-# Common-neighbour conjecture
+# Common neighbour conjectures for Saxl graphs fail at every base size
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22208826.svg)](https://doi.org/10.5281/zenodo.22208826)
 
 This repository contains computational source code and a Lean formalization
-accompanying our paper on the common-neighbour conjecture for Saxl graphs.
+accompanying our paper *Common neighbour conjectures for Saxl graphs fail at
+every base size*.
 It is intentionally source-focused. Generated outputs, run logs, and
 computational certificates are not included.
 
