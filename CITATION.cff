@@ -4,6 +4,7 @@ type: software
 title: "Computational source code and Lean formalization for Common neighbour conjectures for Saxl graphs fail at every base size"
 version: 1.1.0
 date-released: 2026-09-01
+doi: 10.5281/zenodo.22231393
 authors:
   - family-names: Rizzoli
     given-names: Aluna
