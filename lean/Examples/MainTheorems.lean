@@ -1,10 +1,10 @@
 import Examples.MainTheorems.ProofAliases
 
 /-!
-# Theorems 1.2 and 1.3
+# Main theorem
 
 The complete reader-facing interface: the four non-Mathlib definitions needed
-to read the results, followed by the two results. Proofs are linked from
+to read the result, followed by one theorem. Its proof is linked from
 `Examples.MainTheorems.ProofAliases`.
 -/
 
@@ -56,29 +56,17 @@ noncomputable def saxlGraph (P : FinitePermutationGroup) :
 
 end FinitePermutationGroup
 
-/-- **Theorem 1.2.** For every prescribed bound there is a primitive
-permutation group of degree at least that bound and base size two whose Saxl
-graph has two nonadjacent vertices with no common neighbour. -/
-theorem theorem1_2 (degreeBound : Nat) :
-    ∃ P : FinitePermutationGroup,
-      degreeBound ≤ Nat.card P.Point ∧
-        MulAction.IsPreprimitive P.G P.Point ∧
-        P.baseSize = 2 ∧
-        ∃ x y : P.Point, x ≠ y ∧
-          ¬ P.saxlGraph.Adj x y ∧
-          P.saxlGraph.commonNeighbors x y = ∅ :=
-  theorem1_2_from_internal(degreeBound)
-
-/-- **Theorem 1.3.** For every `B ≥ 3` and every prescribed bound there is a
-primitive permutation group of degree at least that bound and base size `B`
-whose Saxl graph has two distinct vertices with no common neighbour. -/
-theorem theorem1_3 (B degreeBound : Nat) (hB : 3 ≤ B) :
+/-- For every base size `B ≥ 2` and every prescribed bound there is a primitive
+permutation group of degree at least that bound and base size `B` whose
+generalised Saxl graph has two nonadjacent vertices with no common neighbour. -/
+theorem mainTheorem (B degreeBound : Nat) (hB : 2 ≤ B) :
     ∃ P : FinitePermutationGroup,
       degreeBound ≤ Nat.card P.Point ∧
         MulAction.IsPreprimitive P.G P.Point ∧
         P.baseSize = B ∧
-        ∃ x y : P.Point, x ≠ y ∧
+        ∃ x y : P.Point,
+          ¬ P.saxlGraph.Adj x y ∧
           P.saxlGraph.commonNeighbors x y = ∅ :=
-  theorem1_3_from_internal(B, degreeBound, hB)
+  mainTheorem_from_internal(B, degreeBound, hB)
 
 end SaxlCounterexamples.MainTheorems

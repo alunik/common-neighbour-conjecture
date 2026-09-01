@@ -3,7 +3,7 @@ import Examples.MainTheorems.Definitions
 import Saxl.Generalized
 
 /-!
-# Internal implementation of Theorems 1.2 and 1.3
+# Internal implementation of the main theorem
 
 Construction parameters, bridge lemmas, and proof machinery used by the
 minimal public module `Examples.MainTheorems`.
@@ -173,40 +173,67 @@ private theorem familyFacts
   · simpa [P] using hcore.2.1
   · simpa [P] using (hqBadVector_ne_zero d hd hd3 tail).symm
 
-/-- **Theorem 1.2.** For every prescribed bound there is a primitive
-permutation group of degree at least that bound and base size two whose Saxl
-graph has two nonadjacent vertices with no common neighbour. -/
-theorem theorem1_2 (degreeBound : Nat) :
-    ∃ P : FinitePermutationGroup,
-      degreeBound ≤ Nat.card P.Point ∧
-        MulAction.IsPreprimitive P.G P.Point ∧
-        P.baseSize = 2 ∧
-        ∃ x y : P.Point, x ≠ y ∧
-          ¬ P.saxlGraph.Adj x y ∧
-          P.saxlGraph.commonNeighbors x y = ∅ := by
-  obtain ⟨d, hd, hd3, hdegree⟩ := pointDegrees_unbounded 0 degreeBound
-  obtain ⟨P, hcard, hprimitive, hsize, x, y, hxy, hnonadj, hcommon⟩ :=
-    familyFacts d hd hd3 0
-  refine ⟨P, ?_, hprimitive, ?_, x, y, hxy, hnonadj rfl, hcommon⟩
-  · simpa [hcard] using hdegree.le
-  · simpa using hsize
+/-- In a generalised Saxl graph at base size at least three, adjacent vertices
+have a common neighbour coming from any minimum base containing them. -/
+private theorem not_adj_of_three_le_baseSize_of_no_commonNeighbours
+    (P : FinitePermutationGroup) {x y : P.Point}
+    (hsize : 3 ≤ P.baseSize)
+    (hcommon : P.saxlGraph.commonNeighbors x y = ∅) :
+    ¬ P.saxlGraph.Adj x y := by
+  rintro ⟨_hxy, b, hinj, hbase, hx, hy⟩
+  have hrange : (Set.range b).ncard = P.baseSize := by
+    simpa using Set.ncard_range_of_injective hinj
+  have hthree : 2 < (Set.range b).ncard := by omega
+  have hextra : ∃ z ∈ Set.range b, z ≠ x ∧ z ≠ y := by
+    by_contra h
+    push Not at h
+    have hsubset : Set.range b ⊆ ({x, y} : Set P.Point) := by
+      intro z hz
+      have hzxy := h z hz
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff]
+      tauto
+    have hle := Set.ncard_le_ncard hsubset
+    have hpair : ({x, y} : Set P.Point).ncard ≤ 2 := by
+      calc
+        ({x, y} : Set P.Point).ncard ≤ ({y} : Set P.Point).ncard + 1 :=
+          Set.ncard_insert_le x {y}
+        _ = 2 := by simp
+    omega
+  obtain ⟨z, hz, hzx, hzy⟩ := hextra
+  have hzcommon : z ∈ P.saxlGraph.commonNeighbors x y := by
+    rw [SimpleGraph.mem_commonNeighbors]
+    constructor
+    · exact ⟨hzx.symm, b, hinj, hbase, hx, hz⟩
+    · exact ⟨hzy.symm, b, hinj, hbase, hy, hz⟩
+  rw [hcommon] at hzcommon
+  exact hzcommon
 
-/-- **Theorem 1.3.** For every `B ≥ 3` and every prescribed bound there is a
-primitive permutation group of degree at least that bound and base size `B`
-whose Saxl graph has two distinct vertices with no common neighbour. -/
-theorem theorem1_3 (B degreeBound : Nat) (hB : 3 ≤ B) :
+/-- For every base size `B ≥ 2` and every prescribed bound there is a primitive
+permutation group of degree at least that bound and base size `B` whose
+generalised Saxl graph has two nonadjacent vertices with no common neighbour. -/
+theorem mainTheorem (B degreeBound : Nat) (hB : 2 ≤ B) :
     ∃ P : FinitePermutationGroup,
       degreeBound ≤ Nat.card P.Point ∧
         MulAction.IsPreprimitive P.G P.Point ∧
         P.baseSize = B ∧
-        ∃ x y : P.Point, x ≠ y ∧
+        ∃ x y : P.Point,
+          ¬ P.saxlGraph.Adj x y ∧
           P.saxlGraph.commonNeighbors x y = ∅ := by
   obtain ⟨d, hd, hd3, hdegree⟩ :=
     pointDegrees_unbounded (B - 2) degreeBound
-  obtain ⟨P, hcard, hprimitive, hsize, x, y, hxy, _hnonadj, hcommon⟩ :=
+  obtain ⟨P, hcard, hprimitive, hsize, x, y, _hxy, hnonadj_two, hcommon⟩ :=
     familyFacts d hd hd3 (B - 2)
   have htail : B - 2 + 2 = B := by omega
-  refine ⟨P, ?_, hprimitive, hsize.trans htail, x, y, hxy, hcommon⟩
+  have hsizeB : P.baseSize = B := hsize.trans htail
+  have hnonadj : ¬ P.saxlGraph.Adj x y := by
+    by_cases hB2 : B = 2
+    · apply hnonadj_two
+      omega
+    · apply not_adj_of_three_le_baseSize_of_no_commonNeighbours P
+      · rw [hsizeB]
+        omega
+      · exact hcommon
+  refine ⟨P, ?_, hprimitive, hsizeB, x, y, hnonadj, hcommon⟩
   simpa [hcard] using hdegree.le
 
 end SaxlCounterexamples.MainTheorems.Internal

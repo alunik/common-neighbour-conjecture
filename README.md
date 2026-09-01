@@ -15,8 +15,7 @@ computational certificates are not included.
 - [`searches/`](searches/): source code for the searches reported in Section 7.
 - [`sporadic/`](sporadic/): computations for the ten cases in Table 1 of
   Lee--Popiel.
-- [`lean/`](lean/): a self-contained Lean 4 formalization of Theorems 1.2 and
-  1.3.
+- [`lean/`](lean/): a self-contained Lean 4 formalization of the main theorem.
 
 The search code uses GAP and Magma to construct groups and export actions,
 Python for orchestration and exact bookkeeping, and C++ for the larger exact

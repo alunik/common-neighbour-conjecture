@@ -1,13 +1,13 @@
 # Lean formalization
 
-This directory contains the Lean 4 formalization of Theorems 1.2 and 1.3 in
+This directory contains the Lean 4 formalization of the main theorem in
 Aluna Rizzoli and Adam R. Thomas, *Counterexamples to common-neighbour
 conjectures for Saxl graphs*.
 
 The reader-facing file is
 [`Examples/MainTheorems.lean`](Examples/MainTheorems.lean). It displays only
-the four non-Mathlib definitions needed to read the results and the two
-theorem statements; their proof terms are kept behind one-line aliases. The
+the four non-Mathlib definitions needed to read the result and its single
+theorem statement; its proof term is kept behind a one-line alias. The
 remaining `.lean` files are the minimal transitive local module dependency
 closure.
 

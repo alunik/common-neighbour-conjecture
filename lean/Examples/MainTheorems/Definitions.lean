@@ -3,9 +3,9 @@ import Mathlib.GroupTheory.GroupAction.Basic
 import Mathlib.Order.Lattice.Nat
 
 /-!
-# Definitions for Theorems 1.2 and 1.3
+# Definitions for the main theorem
 
-The complete non-Mathlib vocabulary used in the two public statements.
+The complete non-Mathlib vocabulary used in the public statement.
 -/
 
 noncomputable section
